@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const FILE = 'data.json';
 
 // Permite receber JSON
@@ -30,6 +30,21 @@ function readNotes() {
 function saveNotes(notes) {
   fs.writeFileSync(FILE, JSON.stringify(notes, null, 2));
 }
+
+// ====================
+// GET - Rota inicial
+// ====================
+app.get('/', (req, res) => {
+  res.json({
+    mensagem: 'API de notas funcionando!',
+    endpoints: {
+      listar: 'GET /api/notes',
+      criar: 'POST /api/notes',
+      atualizar: 'PUT /api/notes/:id',
+      deletar: 'DELETE /api/notes/:id'
+    }
+  });
+});
 
 // ====================
 // GET - Listar notas
@@ -93,5 +108,5 @@ app.delete('/api/notes/:id', (req, res) => {
 // Inicia servidor
 // ====================
 app.listen(PORT, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
