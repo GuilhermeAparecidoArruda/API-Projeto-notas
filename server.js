@@ -3,15 +3,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const FILE = 'data.json';
+const FILE = path.join(__dirname, 'data.json');
 
 // Permite receber JSON
 app.use(bodyParser.json());
 app.use(cors({
-  origin: true,
+  origin: ['http://localhost:5173', 'https://projeto-notas-seven.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
@@ -109,6 +110,10 @@ app.delete('/api/notes/:id', (req, res) => {
 // ====================
 // Inicia servidor
 // ====================
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
