@@ -1,6 +1,7 @@
 // Importa o Express, Body-Parser e FS
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
@@ -9,12 +10,11 @@ const FILE = 'data.json';
 
 // Permite receber JSON
 app.use(bodyParser.json());
-
-// Libera acesso externo (CORS)
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.use(cors({
+  origin: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
 
 // Função para ler arquivo
 function readNotes() {
