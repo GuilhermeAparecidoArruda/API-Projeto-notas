@@ -63,7 +63,8 @@ app.post('/api/notes', (req, res) => {
   const novaNota = {
     id: Date.now().toString(),
     titulo: req.body.titulo,
-    texto: req.body.texto
+    texto: req.body.texto,
+    tag: req.body.tag || null
   };
 
   notes.push(novaNota);
@@ -83,6 +84,7 @@ app.put('/api/notes/:id', (req, res) => {
   if (index >= 0) {
     notes[index].titulo = req.body.titulo;
     notes[index].texto = req.body.texto;
+    notes[index].tag = req.body.tag || notes[index].tag || null;
 
     saveNotes(notes);
     res.json(notes[index]);
